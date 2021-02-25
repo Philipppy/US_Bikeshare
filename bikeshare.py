@@ -3,6 +3,7 @@ import calendar
 import pandas as pd
 import numpy as np
 
+#create possible user entries for the data
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
@@ -10,7 +11,21 @@ months = ['all','jan','feb', 'mar', 'apr', 'may', 'jun']
 
 weekdays = list(calendar.day_name)
 
+#Check for valid input
 def valid_input (message, inputs):
+    """
+    
+
+    Parameters
+    ----------
+    message : (str) - dialog displayed to the user
+    inputs : (list) - list of valid inputs
+
+    Returns
+    -------
+    response : (str) - valid user intput 
+
+    """
     
     while True:
         response = input(message).lower()
@@ -34,17 +49,18 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('Hello! Let\'s explore some US bikeshare data!')
-    # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    city = valid_input("Please enter a city out of the options 'Chicago', 'New York City' "
-                       "and 'Washington': ",list(CITY_DATA.keys()))
+    # get user input for city (chicago, new york city, washington)
+   city = valid_input("Please enter a city out of the options 'Chicago', 'New York City' "
+                      "and 'Washington': ",list(CITY_DATA.keys()))
 
     # get user input for month (all, january, february, ... , june)
     month = valid_input("Please enter a month out of the options 'all', 'january' "
                         ", 'february', 'march', 'april', 'may', 'june'.\n" 
-                        " Three characters are sufficient, e.g. january = jan:",months)
+                        " Three characters are sufficient, e.g. january = jan: ",months)
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
-
+    day = valid_input("Please enter a weekday out of the options"
+                      " 'all','monday',...,'sunday': ",weekdays_lower)
 
     print('-'*40)
     return city, month, day

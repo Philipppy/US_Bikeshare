@@ -15,10 +15,11 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 months = ['all','jan','feb', 'mar', 'apr', 'may', 'jun']
 
 weekdays = list(calendar.day_name)
-print(weekdays)
+#print(weekdays)
 
 weekdays_lower = [weekdays_lower.lower() for weekdays_lower in weekdays]
-print(weekdays_lower)
+weekdays_lower.append('all')
+#print(weekdays_lower)
 
 def valid_input (message, inputs):
     
@@ -43,8 +44,10 @@ print(city)
 
 month = valid_input("Please enter a month out of the options 'all', 'january' "
 ", 'february', 'march', 'april', 'may', 'june'.\n" 
-" Three characters are sufficient, e.g. january = jan:",months)
+" Three characters are sufficient, e.g. january = jan: ",months)
 
 print(month)
 
-day = valid_input("Please enter a weekday out of the options 'all','monday',...,'sunday'",weekdays_lower)
+day = valid_input("Please enter a weekday out of the options 'all','monday',...,'sunday': ",weekdays_lower)
+
+print(day)
