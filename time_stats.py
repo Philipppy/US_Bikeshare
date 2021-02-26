@@ -3,28 +3,18 @@ import calendar
 import pandas as pd
 import numpy as np
 
-
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 25 21:15:47 2021
+Created on Fri Feb 26 22:01:09 2021
 
 @author: Julia und Philipp
 """
 
-"""
-    Loads data for the specified city and filters by month and day if applicable.
-
-    Args:
-        (str) city - name of the city to analyze
-        (str) month - name of the month to filter by, or "all" to apply no month filter
-        (str) day - name of the day of week to filter by, or "all" to apply no day filter
-    Returns:
-        df - Pandas DataFrame containing city data filtered by month and day
-"""
-
+"""Displays statistics on the most frequent times of travel."""
+    
 city = 'washington'
-month = 'february'
-day = 'wednesday'
+month = 'all'
+day = 'all'
     
     
 #load raw data
@@ -52,9 +42,21 @@ if day != 'all':
 print(bikedata.head(3))
 
 
-    
-    
-        
+'----------------------------------------------------------------------------'
+'----------------------------------------------------------------------------'
 
-    
-        
+print('\nCalculating The Most Frequent Times of Travel...\n')
+start_time = time.time()
+
+# display the most common month
+print(bikedata.month.mode().loc[0] + '\n')
+
+# display the most common day of week
+print(bikedata.day.mode().loc[0] + '\n')
+
+# display the most common start hour
+#bikedata['hour'] = bikedata['Start Time'].dt.hour
+print(bikedata['Start Time'].dt.hour.mode().loc[0])
+
+print("\nThis took %s seconds." % (time.time() - start_time))
+print('-'*40)

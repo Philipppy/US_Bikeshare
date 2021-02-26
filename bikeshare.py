@@ -7,9 +7,11 @@ import numpy as np
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
-months = ['all','jan','feb', 'mar', 'apr', 'may', 'jun']
+months = ['all','january','february', 'march', 'april', 'may', 'june']
 
 weekdays = list(calendar.day_name)
+weekdays_lower = [weekdays_lower.lower() for weekdays_lower in weekdays]
+weekdays_lower.append('all')
 
 #Check for valid input
 def valid_input (message, inputs):
@@ -50,13 +52,12 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # get user input for city (chicago, new york city, washington)
-   city = valid_input("Please enter a city out of the options 'Chicago', 'New York City' "
+    city = valid_input("Please enter a city out of the options 'Chicago', 'New York City' "
                       "and 'Washington': ",list(CITY_DATA.keys()))
 
     # get user input for month (all, january, february, ... , june)
     month = valid_input("Please enter a month out of the options 'all', 'january' "
-                        ", 'february', 'march', 'april', 'may', 'june'.\n" 
-                        " Three characters are sufficient, e.g. january = jan: ",months)
+                        ", 'february', 'march', 'april', 'may', 'june': ",months)
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
     day = valid_input("Please enter a weekday out of the options"
@@ -77,7 +78,25 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-
+    df = pd.read_csv(city + ".csv")
+    
+    #use Start time column to extract months and days of rental events
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+    
+    df['month'] = df['Start Time'].dt.month_name()
+    
+    df['day'] = df['Start Time'].dt.day_name()
+    
+    
+    #filter by month
+    if month != 'all':
+            # filter by month to create the new dataframe
+            df = df[df['month']==month.capitalize()]
+            
+    #filter by day
+    if day != 'all':
+            # filter by month to create the new dataframe
+            df = df[df['day']==day.capitalize()]
 
     return df
 
@@ -89,12 +108,13 @@ def time_stats(df):
     start_time = time.time()
 
     # display the most common month
-
-
+    print(bikedata.month.mode().loc[0] + '\n')
+    
     # display the most common day of week
-
-
+    print(bikedata.day.mode().loc[0] + '\n')
+    
     # display the most common start hour
+    print(bikedata['Start Time'].dt.hour.mode().loc[0])
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))

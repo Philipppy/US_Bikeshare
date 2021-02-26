@@ -12,7 +12,7 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
-months = ['all','jan','feb', 'mar', 'apr', 'may', 'jun']
+months = ['jan','feb', 'mar', 'apr', 'may', 'jun','all']
 
 weekdays = list(calendar.day_name)
 #print(weekdays)
