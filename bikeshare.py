@@ -108,13 +108,13 @@ def time_stats(df):
     start_time = time.time()
 
     # display the most common month
-    print(bikedata.month.mode().loc[0] + '\n')
+    print(df.month.mode().loc[0] + '\n')
     
     # display the most common day of week
-    print(bikedata.day.mode().loc[0] + '\n')
+    print(df.day.mode().loc[0] + '\n')
     
     # display the most common start hour
-    print(bikedata['Start Time'].dt.hour.mode().loc[0])
+    print(df['Start Time'].dt.hour.mode().loc[0])
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
