@@ -56,21 +56,20 @@ print('\nCalculating The Most Popular Stations and Trip...\n')
 start_time = time.time()
 
 # display most commonly used start station
-print(bikedata['Start Station'].mode().loc[0] + '\n')
-print(bikedata['Start Station'].value_counts().head(1))
+print("The most commonly used Start Station is: \n\n{}\n".format(bikedata['Start Station'].mode().loc[0]))
+#print(bikedata['Start Station'].mode().loc[0] + '\n')
+print("It appears {} times in the data".format(bikedata['Start Station'].value_counts().head(1).mode().loc[0]))
+#print(bikedata['Start Station'].value_counts().head(1).mode().loc[0])
 print('\n')
 # display most commonly used end station
 print(bikedata['End Station'].mode().loc[0] + '\n')
-print(bikedata['End Station'].value_counts().head(1))
+print(bikedata['End Station'].value_counts().head(1).mode().loc[0])
 
 # display most frequent combination of start station and end station trip
 #group data by Start and End Station
 start_end = bikedata.groupby(['Start Station', 'End Station'])
-#start_end['count'] = start_end.count()
-#start_end.columns=['count']
-#print(start_end['count'])
-#start_end.sort_values(['count'],ascending=False,inplace=True)
-print(start_end)
+print('\n')
+print(start_end.size().sort_values(ascending=False).head(1))
 
 print("\nThis took %s seconds." % (time.time() - start_time))
 print('-'*40)
