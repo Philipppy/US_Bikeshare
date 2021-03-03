@@ -152,7 +152,9 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
-
+    total_travel_t = (df['End Time'] - df['Start Time']).astype('timedelta64[s]')/60
+    total_travel_t = round(timediff,2)
+    print(total_travel_t)
 
     # display mean travel time
 
