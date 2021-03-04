@@ -35,7 +35,7 @@ def valid_input (message, inputs):
             return response
             break
         elif response == "new york":
-            response = "new york city"
+            response = "new_york_city"
             return response
             break
         else:
@@ -54,6 +54,8 @@ def get_filters():
     # get user input for city (chicago, new york city, washington)
     city = valid_input("Please enter a city out of the options 'Chicago', 'New York City' "
                       "and 'Washington': ",list(CITY_DATA.keys()))
+    if city == "new york city":
+        city = "new_york_city"
 
     # get user input for month (all, january, february, ... , june)
     month = valid_input("Please enter a month out of the options 'all', 'january' "
@@ -82,6 +84,7 @@ def load_data(city, month, day):
     
     #use Start time column to extract months and days of rental events
     df['Start Time'] = pd.to_datetime(df['Start Time'])
+    df['End Time'] = pd.to_datetime(df['End Time'])
     
     df['month'] = df['Start Time'].dt.month_name()
     
@@ -108,12 +111,15 @@ def time_stats(df):
     start_time = time.time()
 
     # display the most common month
+    print('The most frequent month is:\n')
     print(df.month.mode().loc[0] + '\n')
     
     # display the most common day of week
+    print('The most frequent day is:\n')
     print(df.day.mode().loc[0] + '\n')
     
     # display the most common start hour
+    print('The most common start hour is:\n')
     print(df['Start Time'].dt.hour.mode().loc[0])
 
 
@@ -130,15 +136,15 @@ def station_stats(df):
     # display most commonly used start station
     print("The most commonly used Start Station is: \n\n{}\n".format(df['Start Station'].mode().loc[0]))
     
-    print("It appears {} times in the data.".format(df['Start Station'].value_counts().head(1).mode().loc[0]))
+    print("\nIt appears {} times in the data.".format(df['Start Station'].value_counts().head(1).mode().loc[0]))
 
     # display most commonly used end station
-    print("The most commonly used End Station is: \n\n{}\n".format(df['End Station'].mode().loc[0] + '\n'))
-    print("It appears {} times in the data.".format(df['End Station'].value_counts().head(1).mode().loc[0]))
+    print("\nThe most commonly used End Station is: \n\n{}\n".format(df['End Station'].mode().loc[0]))
+    print("\nIt appears {} times in the data.".format(df['End Station'].value_counts().head(1).mode().loc[0]))
 
     # display most frequent combination of start station and end station trip
     start_end = df.groupby(['Start Station', 'End Station'])
-    print('The most frequent combination of Start and End Station is: \n')
+    print('\nThe most frequent combination of Start and End Station is: \n')
     print(start_end.size().sort_values(ascending=False).head(1))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -152,11 +158,20 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
-    total_travel_t = (df['End Time'] - df['Start Time']).astype('timedelta64[s]')/60
-    total_travel_t = round(timediff,2)
-    print(total_travel_t)
+    # calculate trip duration per trip in minutes
+    timediff = (df['End Time'] - df['Start Time']).astype('timedelta64[s]')/60
+    #calculate total traveltime in hours
+    total_travel_t =timediff.sum()/60
+    #round to two decimals:
+    total_travel_t= round(total_travel_t,2)
+    print('The total travel time is {} hours'.format(total_travel_t))
 
     # display mean travel time
+    #mean travel time in minutes
+    mean_travel_t = timediff.mean()
+    #round to two decimals
+    mean_travel_t = round(mean_travel_t,2)
+    print("The mean travel time is {} minutes".format(mean_travel_t))
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -168,16 +183,39 @@ def user_stats(df):
 
     print('\nCalculating User Stats...\n')
     start_time = time.time()
-
+    
     # Display counts of user types
-
-
+    print('Usertypes:\n')
+    print(df['User Type'].value_counts())
+    
     # Display counts of gender
-
-
+    print('\nGender:\n')
+    try:
+        print(df['Gender'].value_counts())
+    except KeyError:
+        print('Sorry, no Gender Data in Dataset')
+    
     # Display earliest, most recent, and most common year of birth
-
-
+    print('\nEarliest year of birth:\n')
+    try:
+        print(int(df['Birth Year'].min()))
+    except KeyError:
+        print('Sorry no Birth Year Data in Dataset')
+    
+    print('\nMost recent year of birth:\n')
+    try:
+        print(int(df['Birth Year'].max()))
+    except KeyError:
+        print('Sorry no Birth Year Data in Dataset')
+    
+    
+    print('\nMost common year of birth:\n')
+    try:
+        print(int(df['Birth Year'].mode().iloc[0]))
+    except KeyError:
+        print('Sorry no Birth Year Data in Dataset')
+    
+    
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar  1 21:40:36 2021
+Created on Thu Mar  4 20:28:46 2021
 
 @author: Julia und Philipp
 """
-
 
 import time
 import calendar
@@ -12,11 +11,7 @@ import datetime
 import pandas as pd
 import numpy as np
 
-
-#https://stackoverflow.com/questions/22923775/calculate-pandas-dataframe-time-difference-between-two-columns-in-hours-and-minu
-#https://www.datasciencemadesimple.com/difference-two-timestamps-seconds-minutes-hours-pandas-python-2/
-
-city = 'washington'
+city = 'chicago'
 month = 'all'
 day = 'all'
     
@@ -27,11 +22,11 @@ bikedata = pd.read_csv(city + ".csv")
 #use Start time column to extract months and days of rental events
 bikedata['Start Time'] = pd.to_datetime(bikedata['Start Time'])
 bikedata['End Time'] = pd.to_datetime(bikedata['End Time'])
-print(bikedata.head(10))
+#print(bikedata.head(10))
 bikedata['month'] = bikedata['Start Time'].dt.month_name()
-print(bikedata.head(10))
+#print(bikedata.head(10))
 bikedata['day'] = bikedata['Start Time'].dt.day_name()
-print(bikedata.head(10))
+#print(bikedata.head(10))
 
 #filter by month
 if month != 'all':
@@ -44,22 +39,32 @@ if day != 'all':
         bikedata = bikedata[bikedata['day']==day.capitalize()]
         
         
-print(bikedata.head(3))
-
+#print(bikedata.head(3))
 
 '----------------------------------------------------------------------------'
 '----------------------------------------------------------------------------'
-#trip duration per trip in minutes
-timediff = (bikedata['End Time'] - bikedata['Start Time']).astype('timedelta64[s]')/60
-#total traveltime in hours
-total_travel_t =timediff.sum()/60
-#round to two decimals:
-total_travel_t= round(total_travel_t,2)
-print(total_travel_t)
 
-#mean travel time in minutes
-mean_travel_t = timediff.mean()
-#round to two decimals
-mean_travel_t = round(mean_travel_t,2)
-print(mean_travel_t)
+print('\nCalculating User Stats...\n')
+start_time = time.time()
 
+# Display counts of user types
+print('Usertypes:\n')
+print(bikedata['User Type'].value_counts())
+
+# Display counts of gender
+print('Gender:\n')
+print(bikedata['Gender'].value_counts())
+
+# Display earliest, most recent, and most common year of birth
+print('\nEarliest year of birth:\n')
+print(int(bikedata['Birth Year'].min()))
+
+print('\nMost recent year of birth:\n')
+print(int(bikedata['Birth Year'].max()))
+
+print('\nMost common year of birth:\n')
+print(int(bikedata['Birth Year'].mode().iloc[0]))
+
+
+print("\nThis took %s seconds." % (time.time() - start_time))
+print('-'*40)
