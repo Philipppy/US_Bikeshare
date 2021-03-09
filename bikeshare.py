@@ -233,6 +233,36 @@ def user_stats(df):
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
+    
+def show_data (df):
+    """
+    Shows 5 lines of the given data frame and continues until the user quits
+    by typing "no"
+
+    Parameters
+    ----------
+    df : Dataframe with Bikeshare data of different US cities.
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    response = valid_input("Do you wish to see 5 rows of trip data?" +
+                     " Please enter yes or no.\n",['yes','no'])
+    df_loc = 0 
+    
+    while True:
+        if response == 'yes':
+            print(df.iloc[df_loc:df_loc+5])
+            df_loc = df_loc+5
+        elif response == 'no':
+            print("You decided to quit, Good bye!")
+            break
+        response = valid_input("Do you wish to continue?"
+                               + " Yes will show the next 5 lines, no will quit.\n",
+                               ['yes','no'])
 
 
 def main():
@@ -244,6 +274,7 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+        show_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
